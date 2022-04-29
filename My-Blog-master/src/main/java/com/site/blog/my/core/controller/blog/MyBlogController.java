@@ -23,7 +23,6 @@ import java.util.Map;
  */
 @Controller
 public class MyBlogController {
-
     //public static String theme = "default";
     //public static String theme = "yummy-jekyll";
     public static String theme = "amaze";

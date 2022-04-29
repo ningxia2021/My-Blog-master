@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace映射dao层的相关类-->
 <mapper namespace="com.site.blog.my.core.dao.AdminUserMapper">
+<!-- resultMap映射表与要操作的实体类; id为映射的一个代号，谁使用谁的 SQL 语句中要包含 resultMap id="BaseResultMap" type为实体全包名路径-->
   <resultMap id="BaseResultMap" type="com.site.blog.my.core.entity.AdminUser">
+<!--  column:表字段; jdbcType:字段类型; property:实体类属性名;  -->
     <id column="admin_user_id" jdbcType="INTEGER" property="adminUserId" />
     <result column="login_user_name" jdbcType="VARCHAR" property="loginUserName" />
     <result column="login_password" jdbcType="VARCHAR" property="loginPassword" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
     <result column="locked" jdbcType="TINYINT" property="locked" />
   </resultMap>
+<!-- SQL 语句 -->
+<!-- 这个sql标签我还清楚其具体含义，大胆猜测是 将数据库中表字段展示出来 -->
   <sql id="Base_Column_List">
     admin_user_id, login_user_name, login_password, nick_name, locked
   </sql>
-
+<!-- select标签:查询语句 -->
+<!-- id:dao接口中的抽象方法名  resultMap:引用上面定义的"表字段-实体类"映射-->
   <select id="login" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_admin_user
     where login_user_name = #{userName,jdbcType=VARCHAR} AND login_password=#{password,jdbcType=VARCHAR} AND locked = 0
   </select>
-
+<!--parameterType:dao接口中抽象方法中的参数类型,如果有多个参数，也可以不写-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_admin_user
     where admin_user_id = #{adminUserId,jdbcType=INTEGER}
   </select>
+<!-- insert 插入标签 -->
   <insert id="insert" parameterType="com.site.blog.my.core.entity.AdminUser">
     insert into tb_admin_user (admin_user_id, login_user_name, login_password, 
       nick_name, locked)
@@ -68,8 +75,10 @@
       </if>
     </trim>
   </insert>
+<!-- update : 修改标签 -->
   <update id="updateByPrimaryKeySelective" parameterType="com.site.blog.my.core.entity.AdminUser">
     update tb_admin_user
+<!-- set标签用于更新语句中,这里set标签将解析为set关键字;以下与if的配合操作属于固定输入套路！不多解释-->
     <set>
       <if test="loginUserName != null">
         login_user_name = #{loginUserName,jdbcType=VARCHAR},
