@@ -15,10 +15,13 @@ public interface BlogMapper {
 
     Blog selectByPrimaryKey(Long blogId);
 
+//    有选择性的跟新参数 可以不全更新
     int updateByPrimaryKeySelective(Blog record);
 
+//    全部更新
     int updateByPrimaryKeyWithBLOBs(Blog record);
 
+//    除了content之外 更新其余属性
     int updateByPrimaryKey(Blog record);
 
     List<Blog> findBlogList(PageQueryUtil pageUtil);
@@ -27,6 +30,7 @@ public interface BlogMapper {
 
     int getTotalBlogs(PageQueryUtil pageUtil);
 
+//    删除多条数据
     int deleteBatch(Integer[] ids);
 
     List<Blog> getBlogsPageByTagId(PageQueryUtil pageUtil);

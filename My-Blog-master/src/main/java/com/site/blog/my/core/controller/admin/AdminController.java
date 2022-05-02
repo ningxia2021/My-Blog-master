@@ -20,6 +20,9 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/admin")
 public class AdminController {
 
+//    Controller->局长 Service->处长 Dao->科长 mapper.xml->工人
+//    局长只会给处长打电话处理事务  处长只会找科长解决问题
+//    所以在Controller层 就是只会Service干活的过程
     @Resource
     private AdminUserService adminUserService;
     @Resource
@@ -34,6 +37,8 @@ public class AdminController {
     private CommentService commentService;
 
 
+//    localhost:28083/admin/login 路由 进行登录业务，因为没有@ResponseBody，所以返回的是一个html页面
+//    页面中应该有一个form表单进行登录信息验证
     @GetMapping({"/login"})
     public String login() {
         return "admin/login";
@@ -55,6 +60,7 @@ public class AdminController {
                         @RequestParam("password") String password,
                         @RequestParam("verifyCode") String verifyCode,
                         HttpSession session) {
+//        参数的非空校验
         if (StringUtils.isEmpty(verifyCode)) {
             session.setAttribute("errorMsg", "验证码不能为空");
             return "admin/login";
@@ -63,17 +69,20 @@ public class AdminController {
             session.setAttribute("errorMsg", "用户名或密码不能为空");
             return "admin/login";
         }
+//        验证码校验
         String kaptchaCode = session.getAttribute("verifyCode") + "";
         if (StringUtils.isEmpty(kaptchaCode) || !verifyCode.equals(kaptchaCode)) {
             session.setAttribute("errorMsg", "验证码错误");
             return "admin/login";
         }
+//        用户名密码校验
         AdminUser adminUser = adminUserService.login(userName, password);
         if (adminUser != null) {
             session.setAttribute("loginUser", adminUser.getNickName());
             session.setAttribute("loginUserId", adminUser.getAdminUserId());
             //session过期时间设置为7200秒 即两小时
             //session.setMaxInactiveInterval(60 * 60 * 2);
+//           验证成功就跳转登录后的页面
             return "redirect:/admin/index";
         } else {
             session.setAttribute("errorMsg", "登陆失败");
@@ -81,6 +90,7 @@ public class AdminController {
         }
     }
 
+//    修改密码
     @GetMapping("/profile")
     public String profile(HttpServletRequest request) {
         Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");

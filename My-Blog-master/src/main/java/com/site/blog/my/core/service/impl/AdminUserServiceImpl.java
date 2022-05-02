@@ -11,12 +11,17 @@ import javax.annotation.Resource;
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
 
+//    注入adminUserMapper实例,为了使用dao层中sql方法
     @Resource
     private AdminUserMapper adminUserMapper;
 
+//    因为是接口的实现类，所以@Override 是对接口中的抽象方法进行逻辑描述
     @Override
+//    接收controller层从前端传来的参数，进行用户登录验证
     public AdminUser login(String userName, String password) {
+//        调用MD5Util.MD5Encode对密码进行序列化处理
         String passwordMd5 = MD5Util.MD5Encode(password, "UTF-8");
+//        返回dao层login查找方法结果，AdminUser为返回类型
         return adminUserMapper.login(userName, passwordMd5);
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.site.blog.my.core.dao.BlogMapper">
+<!-- BlogSql 表与实体类的映射字典 -->
     <resultMap id="BaseResultMap" type="com.site.blog.my.core.entity.Blog">
         <id column="blog_id" jdbcType="BIGINT" property="blogId"/>
         <result column="blog_title" jdbcType="VARCHAR" property="blogTitle"/>
@@ -19,6 +20,7 @@
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.site.blog.my.core.entity.Blog">
         <result column="blog_content" jdbcType="LONGVARCHAR" property="blogContent"/>
     </resultMap>
+<!--  自定义即将要志同道合的SQL标签  -->
     <sql id="Base_Column_List">
     blog_id, blog_title, blog_sub_url, blog_cover_image, blog_category_id, blog_category_name, 
     blog_tags, blog_status, blog_views, enable_comment, is_deleted, create_time, update_time
@@ -28,6 +30,8 @@
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         select
+--         作用相当于 * ，
+--         Base_Column_List是固定的几个字段，而用*号的话会降低查询效率，因为后期数据库的字段会不断增加
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
@@ -113,6 +117,7 @@
     UPDATE tb_blog SET is_deleted = 1
     where blog_id = #{blogId,jdbcType=BIGINT} and is_deleted = 0
   </update>
+<!--  for each  -->
     <update id="deleteBatch">
         update tb_blog
         set is_deleted=1 where blog_id in
@@ -134,6 +139,8 @@
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="blogId"
             parameterType="com.site.blog.my.core.entity.Blog">
+-- trim需要搭配if使用，其参数主要是拼接sql语句的作用
+-- prefix 前缀字符拼接； suffix 后缀字符拼接； suffixOverrides 去除最后的符号
         insert into tb_blog
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="blogId != null">

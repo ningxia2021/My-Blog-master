@@ -40,6 +40,7 @@
   </insert>
   <insert id="insertSelective" parameterType="com.site.blog.my.core.entity.AdminUser">
     insert into tb_admin_user
+<!-- prefix : 在SQL 语句中解析定义的内容 suffixOverrides:去掉sql语句中多余的逗号 -->
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="adminUserId != null">
         admin_user_id,
@@ -78,7 +79,9 @@
 <!-- update : 修改标签 -->
   <update id="updateByPrimaryKeySelective" parameterType="com.site.blog.my.core.entity.AdminUser">
     update tb_admin_user
-<!-- set标签用于更新语句中,这里set标签将解析为set关键字;以下与if的配合操作属于固定输入套路！不多解释-->
+<!-- set标签用于更新语句中,这里set标签将解析为set关键字;以下与if的配合操作属于固定输入套路！只有至少存在一个判断结果为true的if时，才会解析set-->
+<!-- set 元素会动态地在行首插入 SET 关键字，并会删掉额外的逗号
+     这一操作与 <trim prefix="SET" suffixOverrides=","></trim> 等价-->
     <set>
       <if test="loginUserName != null">
         login_user_name = #{loginUserName,jdbcType=VARCHAR},
