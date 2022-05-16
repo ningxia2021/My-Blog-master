@@ -22,6 +22,7 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class CommentController {
 
+//    只有一个实例注入，这个类就是围绕一个对象进行的增删改查
     @Resource
     private CommentService commentService;
 
@@ -52,9 +53,11 @@ public class CommentController {
     @ResponseBody
     public Result checkDone(@RequestParam("commentId") Long commentId,
                             @RequestParam("replyBody") String replyBody) {
+//        参数合法性校验
         if (commentId == null || commentId < 1 || StringUtils.isEmpty(replyBody)) {
             return ResultGenerator.genFailResult("参数异常！");
         }
+//        if中的调用 其返回值必为bool类型，而bool类型其return 就是一个判断真假的表达式
         if (commentService.reply(commentId, replyBody)) {
             return ResultGenerator.genSuccessResult();
         } else {
@@ -75,6 +78,8 @@ public class CommentController {
         }
     }
 
+//    渲染页面
+//    客户端发送get请求->服务器动态参数绑定，并回传html页面给客户端->客户端显示页面
     @GetMapping("/comments")
     public String list(HttpServletRequest request) {
         request.setAttribute("path", "comments");

@@ -25,6 +25,7 @@ public class CategoryController {
     @Resource
     private CategoryService categoryService;
 
+//    渲染页面
     @GetMapping("/categories")
     public String categoryPage(HttpServletRequest request) {
         request.setAttribute("path", "categories");

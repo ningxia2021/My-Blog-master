@@ -44,6 +44,7 @@ public class AdminController {
         return "admin/login";
     }
 
+//    动态渲染主页
     @GetMapping({"", "/", "/index", "/index.html"})
     public String index(HttpServletRequest request) {
         request.setAttribute("path", "index");
@@ -55,6 +56,8 @@ public class AdminController {
         return "admin/index";
     }
 
+//  对应login.html中的这一块内容   <form th:action="@{/admin/login}" method="post">
+//    th:action="@{/admin/login}"   就登陆映射路径/admin/login
     @PostMapping(value = "/login")
     public String login(@RequestParam("userName") String userName,
                         @RequestParam("password") String password,
@@ -70,6 +73,7 @@ public class AdminController {
             return "admin/login";
         }
 //        验证码校验
+//        正确的已经存在session里面了，这里只是需出来和前端传过来的进行对比
         String kaptchaCode = session.getAttribute("verifyCode") + "";
         if (StringUtils.isEmpty(kaptchaCode) || !verifyCode.equals(kaptchaCode)) {
             session.setAttribute("errorMsg", "验证码错误");
@@ -90,7 +94,9 @@ public class AdminController {
         }
     }
 
-//    修改密码
+//    渲染 修改密码 页面，动态拿到一些参数
+//    通过get请求http:127.0.0.1:28083/admin/profile 向服务器索要静态html页面
+//    服务器就进去下面请求进行动态参数获取，返回给前端静态页面+动态数据的完整页面
     @GetMapping("/profile")
     public String profile(HttpServletRequest request) {
         Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
@@ -104,6 +110,7 @@ public class AdminController {
         return "admin/profile";
     }
 
+//
     @PostMapping("/profile/password")
     @ResponseBody
     public String passwordUpdate(HttpServletRequest request, @RequestParam("originalPassword") String originalPassword,
@@ -123,6 +130,7 @@ public class AdminController {
         }
     }
 
+//    修改当前登录用户昵称信息
     @PostMapping("/profile/name")
     @ResponseBody
     public String nameUpdate(HttpServletRequest request, @RequestParam("loginUserName") String loginUserName,
@@ -138,8 +146,10 @@ public class AdminController {
         }
     }
 
+//    siderbar.html 中的<a th:href="@{/admin/logout}">这个请求 将被下面方法处理
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
+//        登录添加session，注销就是删除session中保存的用户信息
         request.getSession().removeAttribute("loginUserId");
         request.getSession().removeAttribute("loginUser");
         request.getSession().removeAttribute("errorMsg");

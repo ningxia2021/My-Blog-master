@@ -41,6 +41,7 @@ public class BlogController {
     @Resource
     private CategoryService categoryService;
 
+//    返回结果已经进行了封装，具体再实体类
     @GetMapping("/blogs/list")
     @ResponseBody
     public Result list(@RequestParam Map<String, Object> params) {
@@ -65,6 +66,7 @@ public class BlogController {
         return "admin/edit";
     }
 
+//    传入参数，可以直接获取这个动态参数
     @GetMapping("/blogs/edit/{blogId}")
     public String edit(HttpServletRequest request, @PathVariable("blogId") Long blogId) {
         request.setAttribute("path", "edit");
@@ -87,6 +89,7 @@ public class BlogController {
                        @RequestParam("blogCoverImage") String blogCoverImage,
                        @RequestParam("blogStatus") Byte blogStatus,
                        @RequestParam("enableComment") Byte enableComment) {
+//        参数合法化校验
         if (StringUtils.isEmpty(blogTitle)) {
             return ResultGenerator.genFailResult("请输入文章标题");
         }
@@ -111,6 +114,7 @@ public class BlogController {
         if (StringUtils.isEmpty(blogCoverImage)) {
             return ResultGenerator.genFailResult("封面图不能为空");
         }
+//        构造blog
         Blog blog = new Blog();
         blog.setBlogTitle(blogTitle);
         blog.setBlogSubUrl(blogSubUrl);
@@ -181,6 +185,15 @@ public class BlogController {
         }
     }
 
+    /**
+     * 文件上传
+     * 1.获取源文件名
+     * 2.截取后缀名
+     * 3.定义新的文件名并拼接后缀
+     * 4.指定路径
+     * 5.创建新文件
+     * 6.写入文件
+     */
     @PostMapping("/blogs/md/uploadfile")
     public void uploadFileByEditormd(HttpServletRequest request,
                                      HttpServletResponse response,
@@ -215,6 +228,7 @@ public class BlogController {
         }
     }
 
+//    删除
     @PostMapping("/blogs/delete")
     @ResponseBody
     public Result delete(@RequestBody Integer[] ids) {

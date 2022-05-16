@@ -120,6 +120,7 @@ function deleteBlog() {
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
+                        //根据状态码判断，做出区分
                         if (r.resultCode == 200) {
                             swal("删除成功", {
                                 icon: "success",

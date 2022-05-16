@@ -23,6 +23,7 @@ public class ConfigurationController {
     @Resource
     private ConfigService configService;
 
+//    渲染页面
     @GetMapping("/configurations")
     public String list(HttpServletRequest request) {
         request.setAttribute("path", "configurations");
@@ -30,6 +31,7 @@ public class ConfigurationController {
         return "admin/configuration";
     }
 
+//
     @PostMapping("/configurations/website")
     @ResponseBody
     public Result website(@RequestParam(value = "websiteName", required = false) String websiteName,
