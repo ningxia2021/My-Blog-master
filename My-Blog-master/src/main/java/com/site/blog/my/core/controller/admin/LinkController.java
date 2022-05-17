@@ -26,18 +26,23 @@ public class LinkController {
     @Resource
     private LinkService linkService;
 
+
+//    渲染页面
     @GetMapping("/links")
     public String linkPage(HttpServletRequest request) {
         request.setAttribute("path", "links");
         return "admin/link";
     }
 
+
     @GetMapping("/links/list")
     @ResponseBody
     public Result list(@RequestParam Map<String, Object> params) {
+//        凡是有参数传入 就要进行参数合法性检验
         if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
             return ResultGenerator.genFailResult("参数异常！");
         }
+//
         PageQueryUtil pageUtil = new PageQueryUtil(params);
         return ResultGenerator.genSuccessResult(linkService.getBlogLinkPage(pageUtil));
     }
@@ -52,6 +57,7 @@ public class LinkController {
                        @RequestParam("linkUrl") String linkUrl,
                        @RequestParam("linkRank") Integer linkRank,
                        @RequestParam("linkDescription") String linkDescription) {
+//        参数非空检验
         if (linkType == null || linkType < 0 || linkRank == null || linkRank < 0 || StringUtils.isEmpty(linkName) || StringUtils.isEmpty(linkName) || StringUtils.isEmpty(linkUrl) || StringUtils.isEmpty(linkDescription)) {
             return ResultGenerator.genFailResult("参数异常！");
         }
@@ -66,6 +72,7 @@ public class LinkController {
 
     /**
      * 详情
+     * 从get请求的url中接收参数
      */
     @GetMapping("/links/info/{id}")
     @ResponseBody

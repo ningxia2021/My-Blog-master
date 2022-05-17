@@ -43,6 +43,7 @@ public class UploadController {
         StringBuilder tempName = new StringBuilder();
         tempName.append(sdf.format(new Date())).append(r.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
+//        String FILE_UPLOAD_DIC = "/opt/deploy/upload/";   上传文件的默认url前缀，根据部署设置自行修改
         File fileDirectory = new File(Constants.FILE_UPLOAD_DIC);
         //创建文件
         File destFile = new File(Constants.FILE_UPLOAD_DIC + newFileName);

@@ -7,10 +7,12 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.Resource;
+
 @Configuration
 public class MyBlogWebMvcConfigurer implements WebMvcConfigurer {
 
-    @Autowired
+    @Resource
     private AdminLoginInterceptor adminLoginInterceptor;
 
     public void addInterceptors(InterceptorRegistry registry) {
