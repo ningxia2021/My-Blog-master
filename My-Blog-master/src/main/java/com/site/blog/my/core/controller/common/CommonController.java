@@ -39,11 +39,14 @@ public class CommonController {
             return;
         }
         captchaOutputStream = imgOutputStream.toByteArray();
+
         httpServletResponse.setHeader("Cache-Control", "no-store");
         httpServletResponse.setHeader("Pragma", "no-cache");
         httpServletResponse.setDateHeader("Expires", 0);
         httpServletResponse.setContentType("image/jpeg");
+
         ServletOutputStream responseOutputStream = httpServletResponse.getOutputStream();
+
         responseOutputStream.write(captchaOutputStream);
         responseOutputStream.flush();
         responseOutputStream.close();
