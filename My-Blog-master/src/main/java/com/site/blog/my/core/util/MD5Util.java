@@ -4,9 +4,6 @@ import java.security.MessageDigest;
 
 /**
  * @author 13
- * @qq交流群 796794009
- * @email 2449207463@qq.com
- * @link http://13blog.site
  */
 public class MD5Util {
 

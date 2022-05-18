@@ -13,7 +13,7 @@ import static com.google.code.kaptcha.Constants.KAPTCHA_OBSCURIFICATOR_IMPL;
 public class KaptchaConfig {
     @Bean
     public DefaultKaptcha getDefaultKaptcha(){
-        com.google.code.kaptcha.impl.DefaultKaptcha defaultKaptcha = new com.google.code.kaptcha.impl.DefaultKaptcha();
+        DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         // 初始化一个Propertis对象，设定验证码参数
         Properties properties = new Properties();
         // 设置边框，默认有  yes/no

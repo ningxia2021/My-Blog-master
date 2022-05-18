@@ -39,6 +39,7 @@ public class ErrorPageController implements ErrorController {
     public ModelAndView errorHtml(HttpServletRequest request) {
         HttpStatus status = getStatus(request);
         if (HttpStatus.BAD_REQUEST == status) {
+//            返回的是html页面
             return new ModelAndView("error/error_400");
         } else if (HttpStatus.NOT_FOUND == status) {
             return new ModelAndView("error/error_404");
