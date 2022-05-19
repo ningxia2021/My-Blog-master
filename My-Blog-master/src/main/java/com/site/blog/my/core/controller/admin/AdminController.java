@@ -2,6 +2,7 @@ package com.site.blog.my.core.controller.admin;
 
 import com.site.blog.my.core.entity.AdminUser;
 import com.site.blog.my.core.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,7 @@ public class AdminController {
                         @RequestParam("verifyCode") String verifyCode,
                         HttpSession session) {
 //        参数的非空校验
+//        直接使用StringUtils类中的静态isEmpty方法来做检验
         if (StringUtils.isEmpty(verifyCode)) {
             session.setAttribute("errorMsg", "验证码不能为空");
             return "admin/login";
